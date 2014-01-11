@@ -1,4 +1,4 @@
 cryptomess
 ==========
 
-GAE encrypted messages service uses AES
+GAE service for crypto messages, uses AES

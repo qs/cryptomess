@@ -1,0 +1,50 @@
+{% extends "templates/base.html" %}
+
+{% block title %}My Messages{% endblock %}
+
+{% block content %}
+<button type="button" class="btn btn-link btn-lg btn-block" id="addmessb">Add message</button>
+
+<form role="form" action="" method="POST" style="display: none" id="addmessi">
+  <div class="form-group">
+    <label for="mess-title">Title<span class="danger">*</span>:</label>
+    <input type="text" class="form-control" id="mess-title" name="mess-title" placeholder="Title or hint to key">
+  </div>
+  <div class="form-group">
+    <label for="mess-key">Key:</label>
+    <input type="password" class="form-control" id="mess-key" name="mess-key" placeholder="Key to open">
+  </div>
+  <div class="form-group">
+    <label for="mess-acc" class="text-muted">Access to:</label>
+    <input type="text" class="form-control" id="mess-acc" name="mess-acc" placeholder="google users ex: user@gmail.com">
+  </div>
+  <div class="form-group">
+    <label for="mess-text">Message:</label>
+    <textarea class="form-control" rows="3" id="mess-text" name="mess-text" placeholder="Your secret info here"></textarea>
+  </div>
+  <input type="submit" name="add-mess" id="add-mess" class="btn btn-default" value="Add message">
+</form>
+
+</span>
+
+<hr />
+<h3 class="block">My Messages</h3>
+<table class="table">
+{% for m in messages %}
+    <tr><td width="10%"><p class="text-center"><small>{{ m.dt.strftime('%d.%m.%Y %H:%M') }}</small></p></td>
+        <td><h4><a href="/mess/{{ m.key() }}/">{{ m.title }}</a></h4></td>
+        <td width="15%">
+            <a href="/mess/{{ m.key() }}/edit/" class="btn btn-default btn-s"><span class="glyphicon glyphicon-pencil"></span></a>
+        </td></tr>
+{% endfor %}
+</table>
+
+<hr />
+
+<script type="text/javascript">
+$('#addmessb').click(function() {
+  $('#addmessi').toggle('fast');
+});
+</script>
+
+{% endblock %}

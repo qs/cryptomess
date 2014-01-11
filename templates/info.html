@@ -1,0 +1,24 @@
+{% extends "templates/base.html" %}
+
+{% block title %}About CryptoMess{% endblock %}
+
+{% block content %}
+<h3>What is CryptoMess</h3>
+<p>CryptoMess - is a service for keeping encrypted messages.
+You also can share a message to another google account,
+but he also need a key to decrypt it.</p>
+<ul>
+    <li><strong>Inbox</strong> - accessed messages of other users.</li>
+    <li><strong>My Messages</strong> - messages you wrote, you can edit them here.</li>
+</ul>
+<p>To add access to a message fill "Access to" with user gmail.
+To create a private message leave "Access to" empty.</p>
+<h3>Cases of use</h3>
+<ol>
+    <li>You want to log your secret thoughts, but still keep it in secret</li>
+    <li>You want to send a secret message to another person</li>
+    <li>You don't want to keep all your passwords in mind. So you can use CryptoMess as password keeper with master-password</li>
+</ol>
+<h3>Development</h3>
+<p><a href="https://github.com/qs/cryptomess">https://github.com/qs/cryptomess</a></p>
+{% endblock %}

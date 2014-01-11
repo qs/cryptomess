@@ -1,0 +1,10 @@
+{% extends "templates/base.html" %}
+
+{% block title %}Access to message{% endblock %}
+
+{% block content %}
+<h4>{{ message.title }} <small>{{ message.dt.strftime('%d.%m.%Y %H:%M:%S') }}</small></h4>
+<blockquote>
+<p>{{ content }}</p>
+</blockquote>
+{% endblock %}
