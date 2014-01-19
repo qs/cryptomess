@@ -11,6 +11,7 @@ from Crypto.Cipher import AES
 from Crypto import Random
 import base64
 import hashlib
+from google.appengine.api import mail
 
 jinja_environment = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.dirname(__file__)))
@@ -92,6 +93,12 @@ class BaseHandler(webapp2.RequestHandler):
             for email in access_emails:
                 user = users.User(email)
                 if user not in mess.users:
+                    message = mail.EmailMessage()
+                    message.sender = self.user.email()
+                    message.to = user.email()
+                    message.subject = u"You have a new access at CryptoMess"
+                    message.body = u"So chek it out http://cryptomess.appspot.com/"
+                    message.send()
                     al = AccessList.gql("WHERE user=:1", user).get()
                     if al:
                         al.add_access(mess)

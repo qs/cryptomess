@@ -32,7 +32,7 @@
 <table class="table">
 {% for m in messages %}
     <tr><td width="10%"><p class="text-center"><small>{{ m.dt.strftime('%d.%m.%Y %H:%M') }}</small></p></td>
-        <td><h4><a href="/mess/{{ m.key() }}/">{{ m.title }}</a></h4></td>
+        <td><h4><a href="/mess/{{ m.key() }}/">{{ m.title }}</a> <small class="text-muted">by {{ m.user.email() }}</small></h4></td>
     </tr>
 {% endfor %}
 </table>
