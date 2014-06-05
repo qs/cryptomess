@@ -15,10 +15,16 @@
   <div class="form-group">
     <label for="mess-key">Key:</label>
     <input type="password" class="form-control" id="mess-key" name="mess-key" placeholder="Key to open">
+    <div><strong>NB!</strong> Try to choose a secure key to prevent secret leak</div>
   </div>
   <div class="form-group">
     <label for="mess-acc" class="text-muted">Access to:</label>
     <input type="text" class="form-control" id="mess-acc" name="mess-acc" placeholder="google users ex: user@gmail.com">
+      <div class="emails_select">
+        {% for e in emails %}
+        <a href="#" onClick="addTextTag('e,'); return false">e</a>
+        {% endfor %}
+      </div>
   </div>
   <div class="form-group">
     <label for="mess-text">Message:</label>
@@ -43,6 +49,9 @@
 $('#addmessb').click(function() {
   $('#addmessi').toggle();
 });
+function addTextTag(text){
+document.getElementById('text_tag_input').value += text;
+}
 </script>
 
 {% endblock %}
