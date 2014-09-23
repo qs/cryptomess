@@ -1,11 +1,66 @@
-{% extends "templates/base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>AES (Advanced Encryption Standard) JavaScript implementation in Counter Mode | Movable Type Scripts</title>
+    <meta charset="utf-8">
+    <style>
+        button { font-size: 0.9em; }
+        textarea { max-width: 36em; }
+        .local-files fieldset { font-size: 80%; width: 45%; }
+        .w64 { width: 64em; }
+    </style>
+    <!--[if lt IE 9]><script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+    <!--[if le IE 9]><script src="../js/base64.js"></script><![endif]-->
+    <script src="//www.movable-type.co.uk/scripts/js/crypto/aes.js">/* AES JavaScript implementation */</script>
+    <script src="//www.movable-type.co.uk/scripts/js/crypto/aes-ctr.js">/* AES Counter Mode implementation */</script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="//www.movable-type.co.uk/js/mtl.js">/* MTL utils */</script>
+    <script src="//www.movable-type.co.uk/js/prettify.js">/* google-code-prettify */</script>
+    <script>
+        $(document).ready(function() {
+            // encrypt listener
+            $('#encrypt').click( function() {
+                var t = new Date();
+                ciphertext = Aes.Ctr.encrypt($('#plaintext').val(), $('#password').val(), 256);
+                $('#encrypt-time').html(((new Date() - t))+'ms');
+                $('#cipher').val(ciphertext);
+            });
+            // decrypt listener
+            $('#decrypt').click( function() {
+                var t = new Date();
+                plain = Aes.Ctr.decrypt("ygMWoffYIVQs/TDXSuYVMRf0QeKLo3yzwIJk44j11T6t+IeG+dEtNqefsGfdLd8=", $('#password').val(), 256);
+                $('#decrypt-time').html(((new Date() - t))+'ms');
+                $('#plain').val(plain);
+            });
+        });
+    </script>
 
-{% block title %}dev{% endblock %}
+<body>
 
-{% block content %}
-{{ content }}
-<br />
-{{ ciphertext }}
-<br />
-{{ decrypt }}
-{% endblock %}
+<form>
+    <fieldset><legend>Functional demo</legend>
+        <ul>
+            <li>
+                <label for="password">Password</label>
+                <input type="text" name="password" id="password" value="L0ck it up ŝaf3" class="w12">
+            </li>
+            <li>
+                <label for="plaintext">Plaintext</label>
+                <textarea name="plaintext" id="plaintext" class="width-full">pssst ... đon’t tell anyøne!</textarea>
+            </li>
+            <li>
+                <label><button type="button" name="encrypt" id="encrypt">Encrypt it</button></label>
+                <textarea name="cipher" id="cipher" readonly class="width-full"></textarea>
+                <output class="small grey" id="encrypt-time"></output>
+            </li>
+            <li>
+                <label><button type="button" name="decrypt" id="decrypt">Decrypt it</button></label>
+                <textarea name="plain" id="plain" readonly class="width-full"></textarea>
+                <output class="small grey" id="decrypt-time"></output>
+            </li>
+        </ul>
+    </fieldset>
+</form>
+
+</body>
+</html>
