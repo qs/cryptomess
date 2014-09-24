@@ -28,13 +28,13 @@
   </div>
   <div class="form-group">
     <label for="mess-text">Message:</label>
-    <textarea class="form-control" rows="7" id="mess-text" name="mess-text" placeholder="Your secret info here"></textarea>
+    <textarea class="form-control" rows="10" id="mess-text" name="mess-text" placeholder="Your secret info here"></textarea>
   </div>
   <input type="submit" name="add-mess" id="add-mess" class="btn btn-default" value="Add message">
 </form>
 
 <hr />
-<h3 class="block">Inbox</h3>
+<h3 class="block">My messages</h3>
 <table class="table">
 {% for m in messages %}
     <tr><td width="10%"><p class="text-center"><small>{{ m.dt.strftime('%d.%m.%Y %H:%M') }}</small></p></td>

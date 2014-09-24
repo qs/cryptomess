@@ -1,34 +1,53 @@
-from google.appengine.ext import db
+from google.appengine.ext import ndb
 
-class Message(db.Model):
-    user = db.UserProperty(required=True)
-    title = db.StringProperty()
-    dt = db.DateTimeProperty(auto_now_add=True)
-    #content = db.ByteStringProperty(required=True)
-    content = db.BlobProperty(required=True)
+
+ACCESS_NONE = 0
+ACCESS_LIST = 1
+ACCESS_LINK = 2
+
+
+class BaseModel(ndb.Model):
+    @classmethod
+    def getone(c, key_name):
+        k = ndb.Key(c, key_name)
+        return k.get()
 
     @property
-    def users(self):
-        return AccessList.gql("WHERE messages = :1", self.key())
-
-    def has_access(self, user):
-        if user == self.user:
-            return True
-        al = AccessList.gql("WHERE user=:1", user).get()
-        if self.key() in al.messages:
-            return True
-        else:
-            return False
+    def id(self):
+        return self.key.id()
 
 
-class AccessList(db.Model):
-    user = db.UserProperty(required=True)
-    messages = db.ListProperty(db.Key)
+class Message(BaseModel):
+    author = ndb.UserProperty(required=True)
+    title = ndb.StringProperty(required=True)
+    content = ndb.TextProperty(required=True)
+    dt = ndb.DateTimeProperty(auto_now_add=True)
+    access = ndb.IntegerProperty(required=True, default=ACCESS_NONE, choices=[
+        ACCESS_NONE,
+        ACCESS_LIST,
+        ACCESS_LINK
+    ])
+    access_list = ndb.UserProperty(repeated=True)
+    parent_mess = ndb.KeyProperty()  # parent message
 
-    def add_access(self, message):
-        self.messages.append(message.key())
-        self.save()
+    def can_read(self, user):
+        if self.access == ACCESS_NONE:
+            if user != self.author:
+                return False
+            else:
+                return True
+        elif self.access == ACCESS_LIST:
+            if user.key in self.access_list:
+                return True
+            else:
+                return False
 
-    def remove_access(self, message):
-        self.messages.remove(message.key())
-        self.save()
+    @classmethod
+    def get_my_messes(cls, user):
+        messes = Message.query(Message.author==user).order(-Message.dt)
+        return messes
+
+    @classmethod
+    def get_inbox_messes(cls, user):
+        messes = Message.query(Message.access_list.IN([user.key, ])).order(-Message.dt)
+        return messes

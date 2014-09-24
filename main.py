@@ -5,9 +5,8 @@ import handlers
 
 
 app = webapp2.WSGIApplication([
-    ('/', handlers.MainHandler), # list of accessed messages
-    ('/my/', handlers.MyHandler), # list of my messages
-    ('/info/', handlers.InfoHandler),
+    ('/', handlers.MainHandler), # my messages
+    ('/inbox/', handlers.InboxHandler),
     ('/mess/([A-Za-z0-9\-]+)/', handlers.MessHandler),
     ('/mess/([A-Za-z0-9\-]+)/edit/', handlers.MessEditHandler),
 ], debug=True)
