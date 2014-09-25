@@ -3,6 +3,7 @@ import os
 from google.appengine.api import users
 from cgi import escape
 import webapp2
+from google.appengine.api.users import User
 
 from models import Message
 
@@ -29,6 +30,13 @@ class MainHandler(BaseHandler):
 
     def post(self):
         """ post new message """
+        title = self.request.get('mess-title')
+        content = self.request.get('mess-text')
+        access_list = self.request.get('mess-acc').split(', ')
+        access_list = [User(email=email).key for email in access_list]
+        mess = Message(title=title, user=self.user, content=content, access_list=access_list)
+        mess.put()
+        self.redirect('/')
 
 
 class InboxHandler(BaseHandler):

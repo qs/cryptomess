@@ -7,30 +7,25 @@
     Add message
 </button>
 
-<form role="form" action="" method="POST" style="display: none" id="addmessi">
+<form role="form" class="form-horizontal" action="" method="POST" style="display: none" id="addmessi">
   <div class="form-group">
-    <label for="mess-title">Title:</label>
     <input type="text" class="form-control" id="mess-title" name="mess-title" placeholder="Title or hint to key">
   </div>
   <div class="form-group">
-    <label for="mess-key">Key:</label>
-    <input type="password" class="form-control" id="mess-key" name="mess-key" placeholder="Key to open">
-    <div><strong>NB!</strong> Try to choose a secure key to prevent secret leak</div>
+    <textarea class="form-control" rows="10" id="mess-text" name="mess-text" placeholder="Your secret info here"></textarea>
   </div>
   <div class="form-group">
-    <label for="mess-acc" class="text-muted">Access to:</label>
-    <input type="text" class="form-control" id="mess-acc" name="mess-acc" placeholder="google users ex: user@gmail.com">
+    <input type="password" class="form-control" id="mess-key" name="mess-key" placeholder="Key to open">
+  </div>
+  <div class="form-group">
+    <input type="text" class="form-control" id="mess-acc" name="mess-acc" placeholder="access to google users ex: user@gmail.com, user2@gmail.com">
       <div class="emails_select">
         {% for e in emails %}
         <a href="#" onClick="addTextTag('e,'); return false">e</a>
         {% endfor %}
       </div>
   </div>
-  <div class="form-group">
-    <label for="mess-text">Message:</label>
-    <textarea class="form-control" rows="10" id="mess-text" name="mess-text" placeholder="Your secret info here"></textarea>
-  </div>
-  <input type="submit" name="add-mess" id="add-mess" class="btn btn-default" value="Add message">
+  <input type="submit" name="add-mess" id="add-mess" class="btn btn-default" value="Encrypt and send message">
 </form>
 
 <hr />
@@ -38,7 +33,7 @@
 <table class="table">
 {% for m in messages %}
     <tr><td width="10%"><p class="text-center"><small>{{ m.dt.strftime('%d.%m.%Y %H:%M') }}</small></p></td>
-        <td><h4><a href="/mess/{{ m.key() }}/">{{ m.title }}</a> <small class="text-muted">by {{ m.user.email() }}</small></h4></td>
+        <td><h4><a href="/mess/{{ m.key }}/">{{ m.title }}</a> <small class="text-muted">by {{ m.author.email() }}</small></h4></td>
     </tr>
 {% endfor %}
 </table>
@@ -52,6 +47,8 @@ $('#addmessb').click(function() {
 function addTextTag(text){
 document.getElementById('text_tag_input').value += text;
 }
+
+
 </script>
 
 {% endblock %}
