@@ -46,19 +46,44 @@ class InboxHandler(BaseHandler):
 
     def post(self):
         """ post answer message """
-
+        title = self.request.get('mess-title')
+        content = self.request.get('mess-text')
+        parent_mess = self.request.get('mess-parent')
+        parent_mess = Message.getone(parent_mess)
+        access_list = self.request.get('mess-acc').split(', ')
+        access_list = [User(email=email).key for email in access_list]
+        mess = Message(title=title, user=self.user, content=content, access_list=access_list, parent_mess=parent_mess)
+        mess.put()
+        self.redirect('/')
 
 class MessHandler(BaseHandler):
     def get(self, mess_key):
         """ show message """
         mess_key = escape(mess_key)
         mess = Message.getone(mess_key)
-        self.render('mess', {'mess': mess})
+        if mess.can_read(self.user):
+            self.render('mess', {'mess': mess})
+        else:
+            self.redirect('/')
 
 
 class MessEditHandler(BaseHandler):
-    def get(self):
+    def get(self, mess_key):
         """ show message editor """
+        mess_key = escape(mess_key)
+        mess = Message.getone(mess_key)
+        if mess.author == self.user:
+            self.render('mess_edit', {'mess': mess})
+        else:
+            self.redirect('/')
 
-    def post(self):
+    def post(self, mess_key):
         """ update message """
+        mess_key = escape(mess_key)
+        mess = Message.getone(mess_key)
+        mess.title = self.request.get('mess-title')
+        mess.content = self.request.get('mess-text')
+        access_list = self.request.get('mess-acc').split(', ')
+        mess.access_list = [User(email=email).key for email in access_list]
+        mess.put()
+        self.redirect('/')
