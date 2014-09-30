@@ -26,7 +26,8 @@ class BaseHandler(webapp2.RequestHandler):
 class MainHandler(BaseHandler):
     def get(self):
         """ show list of user messages """
-        self.render('main')
+        messes = Message.get_my_messes(self.user)
+        self.render('main', {'messes': messes})
 
     def post(self):
         """ post new message """
@@ -42,7 +43,8 @@ class MainHandler(BaseHandler):
 class InboxHandler(BaseHandler):
     def get(self):
         """ show list of inbox user messages """
-        self.render('inbox')
+        messes = Message.get_inbox_messes(self.user)
+        self.render('inbox', {'messes': messes})
 
     def post(self):
         """ post answer message """
